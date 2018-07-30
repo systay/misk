@@ -40,6 +40,7 @@ ext {
           metricsStackDriver   : 'com.google.apis:google-api-services-monitoring:v3-rev428-1.23.0',
           gcpDatastore         : 'com.google.cloud:google-cloud-datastore:1.26.0',
           gcpKms               : 'com.google.apis:google-api-services-cloudkms:v1-rev30-1.23.0',
+          okio                 : 'com.squareup.okio:okio:2.0.0-RC1',
           okHttp               : 'com.squareup.okhttp3:okhttp:3.11.0',
           okHttpMockWebServer  : 'com.squareup.okhttp3:mockwebserver:3.11.0',
           junitApi             : 'org.junit.jupiter:junit-jupiter-api:5.0.2',
