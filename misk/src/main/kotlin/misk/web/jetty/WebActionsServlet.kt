@@ -16,10 +16,12 @@ import okhttp3.MediaType
 import okio.Buffer
 import okio.buffer
 import okio.source
+import org.eclipse.jetty.http.HttpFields
 import org.eclipse.jetty.http.HttpMethod
 import org.eclipse.jetty.websocket.servlet.WebSocketCreator
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory
+import java.util.function.Supplier
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.servlet.http.HttpServletRequest
@@ -53,6 +55,15 @@ internal class WebActionsServlet @Inject constructor(
     val seedData = mapOf(
         keyOf<HttpServletRequest>() to request,
         keyOf<Request>() to asRequest)
+
+    // TODO(jwilson): provide a mechanism for actions to send trailers.
+    if (response is org.eclipse.jetty.server.Response) {
+      response.trailers = Supplier<HttpFields> {
+        val trailers = HttpFields()
+        trailers.add("grpc-status", "0")
+        trailers
+      }
+    }
 
     scope.enter(seedData).use {
       val candidateActions = boundActions.mapNotNull {

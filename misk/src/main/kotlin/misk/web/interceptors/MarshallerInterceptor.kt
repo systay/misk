@@ -29,6 +29,14 @@ internal class MarshallerInterceptor constructor(private val marshaller: Marshal
           .build()
     }
 
+    if (headers["Content-Type"] == MediaTypes.APPLICATION_GRPC) {
+      // TODO(jwilson): find a way for an the marshaller to add these
+      headers = response.headers.newBuilder()
+          .add("grpc-encoding", "identity")
+          .add("grpc-accept-encoding", "gzip")
+          .build()
+    }
+
     val body = marshaller.responseBody(response.body)
     return Response(body, headers, response.statusCode)
   }
